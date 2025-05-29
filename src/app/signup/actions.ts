@@ -40,16 +40,22 @@ export async function handleSignUp(prevState: SignUpState, formData: FormData): 
     // Firebase automatically signs the user in on successful account creation.
     return { message: 'Account created successfully! You are now logged in.', success: true };
   } catch (error: any) {
+    console.error('Firebase sign up error details:', error); // Log the full error object on the server
+
     let errorMessage = 'Sign up failed. Please try again.';
-     if (error.code === 'auth/email-already-in-use') {
+    if (error.code === 'auth/email-already-in-use') {
       errorMessage = 'This email address is already in use.';
     } else if (error.code === 'auth/invalid-email') {
       errorMessage = 'Invalid email format.';
     } else if (error.code === 'auth/weak-password') {
       errorMessage = 'Password is too weak. Please choose a stronger password.';
+    } else {
+      // For other Firebase errors or unexpected errors, try to be more specific
+      // Fallback to a generic message if specific properties are not available
+      const specificMessage = error.message || 'An unexpected error occurred.';
+      const errorCode = error.code || 'N/A';
+      errorMessage = `Sign up failed: ${specificMessage} (Code: ${errorCode})`;
     }
-    // console.error('Firebase sign up error:', error.code, error.message); // For server-side logging
     return { message: errorMessage, success: false };
   }
 }
-
