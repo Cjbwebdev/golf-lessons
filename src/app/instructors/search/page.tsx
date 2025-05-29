@@ -1,3 +1,4 @@
+
 import { InstructorCard } from '@/components/features/instructors/instructor-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,8 +8,8 @@ import { Search, MapPin, Star, CalendarDays,SlidersHorizontal } from 'lucide-rea
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Find Golf Instructors | TeeTime Trainer',
-  description: 'Search for golf instructors near you and filter by rating or availability.',
+  title: 'Find Golf Instructors Worldwide | TeeTime Trainer',
+  description: 'Search for golf instructors anywhere in the world and filter by rating or availability.',
 };
 
 export default function InstructorSearchPage() {
@@ -20,14 +21,14 @@ export default function InstructorSearchPage() {
       <section className="bg-primary/10 p-8 rounded-xl shadow-sm">
         <h1 className="text-4xl font-bold text-primary mb-4">Find Your Perfect Golf Coach</h1>
         <p className="text-lg text-muted-foreground mb-6 max-w-2xl">
-          Enter your location to discover skilled instructors ready to help you improve your game. Use filters to narrow down your search.
+          Search for skilled instructors anywhere in the world. Enter a city, region, or country, and use filters to narrow down your search.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 items-center">
           <div className="relative flex-grow w-full sm:w-auto">
             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Enter postcode or city (e.g., 90210 or Augusta, GA)"
+              placeholder="Enter city, region, or country (e.g., London, Tokyo, California)"
               className="pl-10 pr-16 h-12 text-base shadow-inner"
             />
           </div>
