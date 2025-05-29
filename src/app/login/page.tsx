@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react'; // Changed from 'react-dom' and useFormState
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2, LogIn } from 'lucide-react';
 import Link from 'next/link';
-import { handleLogin } from './actions';
+import { handleLogin, type LoginState } from './actions'; // Added type LoginState import
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/auth-context';
@@ -38,8 +38,8 @@ export default function LoginPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
 
-  const initialState = { message: null, errors: {} };
-  const [state, dispatch] = useFormState(handleLogin, initialState);
+  const initialState: LoginState = { message: null, errors: {} }; // Ensured LoginState type is used
+  const [state, dispatch] = useActionState(handleLogin, initialState); // Changed from useFormState
 
   useEffect(() => {
     if (user && !authLoading) {
@@ -104,3 +104,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

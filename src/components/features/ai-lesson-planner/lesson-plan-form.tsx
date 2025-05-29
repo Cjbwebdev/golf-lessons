@@ -1,6 +1,8 @@
+
 "use client";
 
-import { useFormState, useFormStatus } from 'react-dom';
+import React from 'react'; // Added React import for useEffect
+import { useActionState, useFormStatus } from 'react'; // Changed from 'react-dom' and useFormState
 import { handleSuggestLessonPlan } from '@/app/ai-lesson-planner/actions';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -35,7 +37,7 @@ function SubmitButton() {
 
 export function LessonPlanForm({ onLessonPlanGenerated }: LessonPlanFormProps) {
   const initialState = { lessonPlan: undefined, error: undefined, fieldErrors: undefined };
-  const [state, dispatch] = useFormState(handleSuggestLessonPlan, initialState);
+  const [state, dispatch] = useActionState(handleSuggestLessonPlan, initialState); // Changed from useFormState
 
   // Notify parent component when lesson plan is generated or an error occurs
   React.useEffect(() => {
@@ -102,3 +104,4 @@ export function LessonPlanForm({ onLessonPlanGenerated }: LessonPlanFormProps) {
     </Card>
   );
 }
+
