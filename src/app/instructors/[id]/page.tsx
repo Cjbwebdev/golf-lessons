@@ -1,0 +1,182 @@
+import Image from 'next/image';
+import { mockInstructors } from '@/lib/mock-data';
+import type { Instructor } from '@/lib/types';
+import { StarRating } from '@/components/features/reviews/star-rating';
+import { AvailabilityCalendar } from '@/components/features/instructors/availability-calendar';
+import { ReviewCard } from '@/components/features/reviews/review-card';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { DollarSign, MapPin, Award, Users, MessageSquare, Edit } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import type { Metadata, ResolvingMetadata } from 'next';
+
+type Props = {
+  params: { id: string }
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const id = params.id;
+  const instructor = mockInstructors.find(inst => inst.id === id);
+ 
+  if (!instructor) {
+    return {
+      title: 'Instructor Not Found | TeeTime Trainer',
+    }
+  }
+ 
+  return {
+    title: `${instructor.name} | Golf Instructor | TeeTime Trainer`,
+    description: `View ${instructor.name}'s profile, availability, and reviews. ${instructor.bio.substring(0,100)}...`,
+  }
+}
+
+
+export default function InstructorProfilePage({ params }: { params: { id: string } }) {
+  const instructor = mockInstructors.find(inst => inst.id === params.id);
+
+  if (!instructor) {
+    return (
+      <div className="text-center py-20">
+        <h1 className="text-3xl font-bold text-destructive">Instructor Not Found</h1>
+        <p className="text-muted-foreground mt-2">Sorry, we couldn't find an instructor with that ID.</p>
+        <Button asChild className="mt-6">
+          <a href="/instructors/search">Back to Search</a>
+        </Button>
+      </div>
+    );
+  }
+
+  const overallRating = instructor.reviews.length > 0 
+    ? instructor.reviews.reduce((acc, r) => acc + r.rating, 0) / instructor.reviews.length
+    : 0;
+
+  return (
+    <div className="space-y-12">
+      {/* Hero Section */}
+      <section className="grid md:grid-cols-3 gap-8 items-start bg-card p-8 rounded-xl shadow-xl border">
+        <div className="md:col-span-1">
+          <Image
+            src={instructor.profileImageUrl}
+            alt={instructor.name}
+            width={300}
+            height={300}
+            className="rounded-lg object-cover w-full aspect-square shadow-md"
+            data-ai-hint="golfer portrait"
+          />
+        </div>
+        <div className="md:col-span-2 space-y-4">
+          <h1 className="text-4xl font-bold text-primary">{instructor.name}</h1>
+          <div className="flex items-center gap-4 text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <MapPin className="h-5 w-5 text-accent" />
+              <span>{instructor.location}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <DollarSign className="h-5 w-5 text-accent" />
+              <span>${instructor.hourlyRate} / 45-min lesson</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <StarRating rating={overallRating} size={24} />
+            <span className="text-lg text-muted-foreground">({instructor.reviews.length} reviews)</span>
+          </div>
+          <p className="text-foreground/80 leading-relaxed">{instructor.bio}</p>
+          {instructor.specialties && instructor.specialties.length > 0 && (
+            <div className="pt-2">
+              <h3 className="text-sm font-semibold uppercase text-muted-foreground tracking-wider mb-2">Specialties</h3>
+              <div className="flex flex-wrap gap-2">
+                {instructor.specialties.map(spec => (
+                  <Badge key={spec} variant="outline" className="text-sm py-1 px-3">{spec}</Badge>
+                ))}
+              </div>
+            </div>
+          )}
+          <Button size="lg" className="mt-4 w-full sm:w-auto shadow-md hover:shadow-lg transition-shadow">
+             <CalendarDays className="mr-2 h-5 w-5" /> Check Availability & Book
+          </Button>
+        </div>
+      </section>
+
+      {/* Availability Section */}
+      <section id="availability">
+        <AvailabilityCalendar availability={instructor.availability} instructorName={instructor.name} />
+      </section>
+
+      <Separator />
+
+      {/* Reviews Section */}
+      <section id="reviews" className="space-y-8">
+        <div className="flex flex-col sm:flex-row justify-between items-center">
+          <h2 className="text-3xl font-semibold text-foreground">Student Reviews</h2>
+          <div className="flex items-center gap-2 mt-2 sm:mt-0">
+            <MessageSquare className="h-6 w-6 text-primary" />
+            <span className="text-xl font-medium text-foreground">
+              {overallRating > 0 ? overallRating.toFixed(1) : 'No ratings yet'}
+            </span>
+            <span className="text-muted-foreground">({instructor.reviews.length} reviews)</span>
+          </div>
+        </div>
+
+        {instructor.reviews.length > 0 ? (
+          <div className="grid md:grid-cols-2 gap-6">
+            {instructor.reviews.map(review => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-muted-foreground text-center py-4">No reviews yet for {instructor.name}. Be the first to leave one after your lesson!</p>
+        )}
+        
+        {/* Leave a Review Form (UI only) */}
+        <Card className="shadow-lg border">
+          <CardHeader>
+            <CardTitle className="text-2xl text-primary">Leave a Review for {instructor.name}</CardTitle>
+            <CardDescription>Share your experience to help others.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <label htmlFor="rating" className="block text-sm font-medium text-foreground mb-1">Your Rating</label>
+              <StarRating rating={0} interactive onRate={(r) => console.log('Rated:', r)} size={28} />
+            </div>
+            <div>
+              <label htmlFor="comment" className="block text-sm font-medium text-foreground mb-1">Your Comment</label>
+              <Textarea id="comment" placeholder={`How was your lesson with ${instructor.name}?`} rows={4} className="shadow-inner" />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full sm:w-auto shadow-md hover:shadow-lg transition-shadow">
+              <Edit className="mr-2 h-4 w-4" /> Submit Review
+            </Button>
+          </CardFooter>
+        </Card>
+      </section>
+    </div>
+  );
+}
+
+function CalendarDays(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+      <line x1="16" x2="16" y1="2" y2="6" />
+      <line x1="8" x2="8" y1="2" y2="6" />
+      <line x1="3" x2="21" y1="10" y2="10" />
+    </svg>
+  )
+}
