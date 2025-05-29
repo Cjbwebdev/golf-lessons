@@ -1,7 +1,8 @@
 
 "use client";
 
-import { useActionState, useFormStatus } from 'react'; // Changed from 'react-dom' and useFormState
+import { useActionState } from 'react'; 
+import { useFormStatus } from 'react-dom'; // Corrected import for useFormStatus
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,11 +10,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 // import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"; // Alert for general messages will be replaced by toast
 import { Loader2, UserPlus } from 'lucide-react';
 import Link from 'next/link';
-import { handleSignUp, type SignUpState } from './actions'; // Added type SignUpState import
+import { handleSignUp, type SignUpState } from './actions'; 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/auth-context';
-import { useToast } from "@/hooks/use-toast"; // Import useToast
+import { useToast } from "@/hooks/use-toast"; 
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -37,10 +38,10 @@ function SubmitButton() {
 export default function SignUpPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  const { toast } = useToast(); // Initialize toast
+  const { toast } = useToast(); 
 
   const initialState: SignUpState = { message: null, errors: {}, success: false };
-  const [state, dispatch] = useActionState(handleSignUp, initialState); // Changed from useFormState
+  const [state, dispatch] = useActionState(handleSignUp, initialState); 
 
   useEffect(() => {
     // This effect handles redirection if the user becomes authenticated
