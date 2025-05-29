@@ -17,7 +17,7 @@ const securityHeaders = [
   // You can add more headers here like Content-Security-Policy, but CSP requires careful configuration.
   // {
   //   key: 'Content-Security-Policy',
-  //   value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://placehold.co; font-src 'self' data:;"
+  //   value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://placehold.co https://source.unsplash.com; font-src 'self' data:;"
   // }
 ];
 
@@ -37,6 +37,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'source.unsplash.com',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
   async headers() {

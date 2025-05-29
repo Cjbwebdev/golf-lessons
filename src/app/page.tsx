@@ -20,7 +20,7 @@ export default function HomePage() {
 
       <div className="relative w-full max-w-3xl h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden shadow-2xl">
         <Image
-          src="https://placehold.co/1200x600.png"
+          src="https://source.unsplash.com/random/1200x600/?golf,course,landscape"
           alt="Golf course scenery"
           layout="fill"
           objectFit="cover"

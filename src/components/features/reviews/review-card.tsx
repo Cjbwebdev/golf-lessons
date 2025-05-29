@@ -19,7 +19,9 @@ export function ReviewCard({ review }: ReviewCardProps) {
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <div className="flex items-center gap-3">
           <Avatar>
-            <AvatarImage src={`https://placehold.co/40x40.png?text=${studentInitials}`} alt={review.studentName} data-ai-hint="person avatar" />
+            {review.studentAvatarUrl && (
+              <AvatarImage src={review.studentAvatarUrl} alt={review.studentName} data-ai-hint="person avatar" />
+            )}
             <AvatarFallback>{studentInitials}</AvatarFallback>
           </Avatar>
           <div>

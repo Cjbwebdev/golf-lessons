@@ -20,6 +20,7 @@ export interface AvailabilitySlot {
 export interface Review {
   id: string;
   studentName: string;
+  studentAvatarUrl?: string; // Optional URL for student's avatar
   rating: number;
   comment: string;
   date: string; // ISO string date
