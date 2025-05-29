@@ -25,6 +25,22 @@ const sampleReviews: Review[] = [
     comment: 'Best coach I\'ve ever had!', 
     date: '2024-06-20T09:00:00Z' 
   },
+  {
+    id: 'r4',
+    studentName: 'Diana Prince',
+    studentAvatarUrl: 'https://source.unsplash.com/random/40x40/?woman,professional,portrait',
+    rating: 4,
+    comment: 'Great at explaining complex techniques simply. My short game has improved a lot!',
+    date: '2024-07-05T11:00:00Z'
+  },
+  {
+    id: 'r5',
+    studentName: 'Edward Nigma',
+    studentAvatarUrl: 'https://source.unsplash.com/random/40x40/?man,thinking,portrait',
+    rating: 5,
+    comment: 'Helped me understand course strategy like never before. Brilliant instructor!',
+    date: '2024-07-18T16:00:00Z'
+  }
 ];
 
 export const mockInstructors: Instructor[] = [
@@ -38,6 +54,7 @@ export const mockInstructors: Instructor[] = [
     availability: [
       { date: '2024-08-01', timeSlots: ['09:00', '09:45', '14:00'] },
       { date: '2024-08-02', timeSlots: ['10:30', '11:15'] },
+      { date: '2024-08-05', timeSlots: ['09:00', '09:45'] },
     ],
     profileImageUrl: 'https://source.unsplash.com/random/400x400/?male,golfer,portrait',
     averageRating: 4.8,
@@ -54,6 +71,7 @@ export const mockInstructors: Instructor[] = [
     availability: [
       { date: '2024-08-01', timeSlots: ['13:00', '13:45'] },
       { date: '2024-08-03', timeSlots: ['08:15', '09:00', '09:45'] },
+      { date: '2024-08-06', timeSlots: ['14:00', '14:45'] },
     ],
     profileImageUrl: 'https://source.unsplash.com/random/400x400/?female,golfer,portrait',
     averageRating: 4.5,
@@ -69,13 +87,14 @@ export const mockInstructors: Instructor[] = [
     hourlyRate: 120,
     availability: [
       { date: '2024-08-05', timeSlots: ['11:15', '12:00', '15:30'] },
+      { date: '2024-08-07', timeSlots: ['10:00', '10:45'] },
     ],
     profileImageUrl: 'https://source.unsplash.com/random/400x400/?man,golf,coach',
     averageRating: 4.9,
     specialties: ['Advanced Analytics', 'TrackMan', 'Competitive Play'],
-    reviews: [],
+    reviews: [sampleReviews[4]],
   },
-    {
+  {
     id: '4',
     name: 'Sarah Davis',
     bio: 'Friendly and approachable instructor, great for juniors and new golfers. Focuses on making golf fun and accessible.',
@@ -85,10 +104,43 @@ export const mockInstructors: Instructor[] = [
     availability: [
       { date: '2024-08-02', timeSlots: ['16:00', '16:45'] },
       { date: '2024-08-04', timeSlots: ['10:30', '11:15', '13:00'] },
+      { date: '2024-08-08', timeSlots: ['09:30', '10:15'] },
     ],
     profileImageUrl: 'https://source.unsplash.com/random/400x400/?woman,golf,instructor',
     averageRating: 4.2,
     specialties: ['Junior Golf', 'New Golfers', 'Group Lessons'],
-    reviews: [sampleReviews[0]],
+    reviews: [sampleReviews[0], sampleReviews[3]],
+  },
+  {
+    id: '5',
+    name: 'David Lee',
+    bio: 'Specializes in golf fitness and injury prevention. Certified TPI instructor with a holistic approach to improving your game and physical conditioning.',
+    location: 'San Diego, CA',
+    postcode: '92101',
+    hourlyRate: 85,
+    availability: [
+      { date: '2024-08-03', timeSlots: ['14:00', '14:45', '15:30'] },
+      { date: '2024-08-06', timeSlots: ['09:00', '09:45', '10:30'] },
+    ],
+    profileImageUrl: 'https://source.unsplash.com/random/400x400/?male,fitness,coach',
+    averageRating: 4.7,
+    specialties: ['Golf Fitness', 'TPI Certified', 'Injury Prevention'],
+    reviews: [sampleReviews[1], sampleReviews[2]],
+  },
+  {
+    id: '6',
+    name: 'Emily Chen',
+    bio: 'Passionate about introducing women to golf. Offers a supportive and encouraging environment for learning. Focus on fundamentals and building confidence.',
+    location: 'Chicago, IL',
+    postcode: '60611',
+    hourlyRate: 70,
+    availability: [
+      { date: '2024-08-04', timeSlots: ['11:00', '11:45', '13:00', '13:45'] },
+      { date: '2024-08-07', timeSlots: ['16:00', '16:45'] },
+    ],
+    profileImageUrl: 'https://source.unsplash.com/random/400x400/?asian,woman,golfer',
+    averageRating: 4.6,
+    specialties: ['Women\'s Golf', 'Fundamentals', 'Confidence Building'],
+    reviews: [sampleReviews[3], sampleReviews[0]],
   },
 ];
