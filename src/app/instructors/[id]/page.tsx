@@ -6,12 +6,11 @@ import { StarRating } from '@/components/features/reviews/star-rating';
 import { AvailabilityCalendar } from '@/components/features/instructors/availability-calendar';
 import { ReviewCard } from '@/components/features/reviews/review-card';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { DollarSign, MapPin, Award, Users, MessageSquare, Edit, CalendarDays } from 'lucide-react'; // Added CalendarDays
+import { DollarSign, MapPin, Award, Users, MessageSquare, CalendarDays } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { Metadata, ResolvingMetadata } from 'next';
+import { LeaveReviewForm } from '@/components/features/instructors/leave-review-form'; // Added import
 
 type Props = {
   params: { id: string }
@@ -134,27 +133,7 @@ export default function InstructorProfilePage({ params }: { params: { id: string
         )}
         
         {/* Leave a Review Form (UI only) */}
-        <Card className="shadow-lg border">
-          <CardHeader>
-            <CardTitle className="text-2xl text-primary">Leave a Review for {instructor.name}</CardTitle>
-            <CardDescription>Share your experience to help others.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label htmlFor="rating" className="block text-sm font-medium text-foreground mb-1">Your Rating</label>
-              <StarRating rating={0} interactive onRate={(r) => console.log('Rated:', r)} size={28} />
-            </div>
-            <div>
-              <label htmlFor="comment" className="block text-sm font-medium text-foreground mb-1">Your Comment</label>
-              <Textarea id="comment" placeholder={`How was your lesson with ${instructor.name}?`} rows={4} className="shadow-inner" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button className="w-full sm:w-auto shadow-md hover:shadow-lg transition-shadow">
-              <Edit className="mr-2 h-4 w-4" /> Submit Review
-            </Button>
-          </CardFooter>
-        </Card>
+        <LeaveReviewForm instructorName={instructor.name} />
       </section>
     </div>
   );
