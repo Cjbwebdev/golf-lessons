@@ -37,7 +37,8 @@ export async function handleSignUp(prevState: SignUpState, formData: FormData): 
 
   try {
     await createUserWithEmailAndPassword(auth, email, password);
-    return { message: 'Account created successfully! You can now log in.', success: true };
+    // Firebase automatically signs the user in on successful account creation.
+    return { message: 'Account created successfully! You are now logged in.', success: true };
   } catch (error: any) {
     let errorMessage = 'Sign up failed. Please try again.';
      if (error.code === 'auth/email-already-in-use') {
@@ -51,3 +52,4 @@ export async function handleSignUp(prevState: SignUpState, formData: FormData): 
     return { message: errorMessage, success: false };
   }
 }
+

@@ -6,13 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+// import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"; // Alert for general messages will be replaced by toast
 import { Loader2, UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import { handleSignUp } from './actions';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/auth-context';
+import { useToast } from "@/hooks/use-toast"; // Import useToast
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -36,24 +37,43 @@ function SubmitButton() {
 export default function SignUpPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
+  const { toast } = useToast(); // Initialize toast
 
-  const initialState = { message: null, errors: {} };
+  const initialState: SignUpState = { message: null, errors: {}, success: false };
   const [state, dispatch] = useFormState(handleSignUp, initialState);
 
- useEffect(() => {
+  useEffect(() => {
+    // This effect handles redirection if the user becomes authenticated
+    // (e.g., after successful Firebase sign-up which auto-logs in, or if already logged in)
     if (user && !authLoading) {
-      router.push('/'); // Redirect if already logged in
+      router.push('/'); 
     }
   }, [user, authLoading, router]);
 
   useEffect(() => {
-    if (state.success) {
-      router.push('/'); // Redirect to dashboard or home on successful sign up
+    // This effect handles showing toast messages based on the form submission state
+    if (state.success && state.message) {
+      toast({
+        title: "Account Created!",
+        description: state.message + " You will be redirected shortly.",
+        duration: 5000, // Show toast for 5 seconds
+      });
+      // The redirection will be primarily handled by the auth state change effect above.
+    } else if (!state.success && state.message && (!state.errors || Object.keys(state.errors).length === 0)) {
+      // Show a general error toast if there's a message, no success, AND no specific field errors
+      toast({
+        title: "Sign Up Failed",
+        description: state.message,
+        variant: "destructive",
+      });
     }
-  }, [state.success, router]);
+    // Field-specific errors (state.errors) are displayed inline below their respective input fields.
+  }, [state.success, state.message, state.errors, toast]);
 
-  if (authLoading || user) {
-     // Show a loader or null while checking auth state or if user is already logged in and redirecting
+
+  if (authLoading || (user && !state.success)) { 
+    // Show loader if auth is loading or if user is logged in (and not immediately after a successful signup action)
+    // This helps prevent flashing the signup form if already logged in.
     return (
       <div className="flex justify-center items-center min-h-[calc(100vh-10rem)]">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -81,18 +101,9 @@ export default function SignUpPage() {
               {state.errors?.password && <p className="text-sm text-destructive">{state.errors.password.join(', ')}</p>}
             </div>
             
-            {state.message && !state.success &&(
-              <Alert variant="destructive">
-                <AlertTitle>Sign Up Failed</AlertTitle>
-                <AlertDescription>{state.message}</AlertDescription>
-              </Alert>
-            )}
-             {state.success && state.message && (
-                <Alert variant="default" className="bg-green-100 border-green-300 text-green-700">
-                    <AlertTitle>Success!</AlertTitle>
-                    <AlertDescription>{state.message} Redirecting...</AlertDescription>
-                </Alert>
-            )}
+            {/* General non-field error messages and success messages are now handled by toasts */}
+            {/* Removed Alert components for state.message to avoid redundancy with toasts */}
+
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
             <SubmitButton />
@@ -108,3 +119,4 @@ export default function SignUpPage() {
     </div>
   );
 }
+
